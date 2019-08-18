@@ -1,0 +1,70 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+
+    <title>Demo | Matcher-Core</title>
+
+    <body style="font-family:monospace; color: whitesmoke;background-color: black; margin: 200px; margin-top:50px">
+      <figure class="figure" style="margin-left:200px">
+        <img src="./assets/resources/small.jpg" alt="image 1" class="figure-img img-fluid rounded" width="200px">
+        <figcaption class="figure-caption">Image 1</figcaption>
+      </figure>
+      <figure class="figure" style="margin-left:200px">
+        <img src="./assets/resources/big.jpg" alt="image 2" class="figure-img img-fluid rounded" style="float: right" width="200px">
+        <figcaption class="figure-caption">Image 2</figcaption>
+      </figure>
+      <br>
+      <br>
+      <br>
+      <h3> - Detected points in both images</h3>
+      <div id="res1" style="color: chartreuse; height: 300px; overflow: scroll; font-size: 20px"></div>
+      <br>
+      <br>
+      <br>
+      <h3> - Detected matches in both images</h3>
+      <div id="res2" style="color: chartreuse; height: 300px; overflow: scroll; font-size: 20px"></div>
+      <!-- <center>
+        <img src="./assets/resources/small.jpg" alt="image 1" class="img-fluid rounded" width="200px" style="z-index:100; position: absolute; opacity: 0.2">
+        <img src="./assets/resources/big.jpg" alt="image 2" class="img-fluid rounded" width="200px" style="z-index:101; position: absolute; opacity: 0.2">
+      </center> -->
+      <br>
+      <br>
+      <br>
+      <h3> - Evaluation</h3>
+      <figure class="figure">
+        <img src="./assets/resources/compare.jpg" alt="images comparision" class="figure-img img-fluid rounded">
+        <figcaption class="figure-caption">The "matches" detected above (population: 9) have been plotted in image 1 and image 2 coordinate space for better representation, with the respective points having similiar color.</figcaption>
+      </figure>
+      <br>
+    <h6>Made with ❤ by Public Lab.</h6>
+    <a href="https://github.com/publiclab/matcher-core">Check out the Source Code!</a>
+    </body>
+
+    <script src="./orb.core.min.js"></script>
+    <script>
+      new Matcher(
+        "./assets/resources/small.jpg",
+        "./assets/resources/big.jpg",
+        async function(q) {
+          var res = await q;
+          document.getElementById("res1").innerHTML = JSON.stringify(res.points);
+          document.getElementById("res2").innerHTML = JSON.stringify(res.matched_points);
+        },
+        {
+          browser: true,
+          leniency: 30,
+          params: {
+            lap_thres: 30,
+            eigen_thres: 35
+          }
+        }
+      );
+    </script>
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
+</html>
