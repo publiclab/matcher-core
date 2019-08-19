@@ -7,15 +7,13 @@
 
 <script src="../orb.core.min.js"></script>
 <script>
-  new Matcher(
-    "../assets/resources/small.jpg",
-    "../assets/resources/big.jpg",
-    async function(q) {
-      var res = await q;
-      document.getElementById("res").innerHTML = JSON.stringify(res);
-    },
-    {
-      browser: true,
+  new Matcher("../assets/resources/small.jpg", "../assets/resources/big.jpg",
+      async function (q) {
+        var res = await q;
+        document.getElementById('res').innerHTML = JSON.stringify(res);
+      },
+      {
+      query: 'matches',
       leniency: 30,
       params: {
         lap_thres: 30,

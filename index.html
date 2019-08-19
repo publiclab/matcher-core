@@ -10,11 +10,11 @@
 
     <body style="font-family:monospace; color: whitesmoke;background-color: black; margin: 200px; margin-top:50px">
       <figure class="figure" style="margin-left:200px">
-        <img src="./assets/resources/small.jpg" alt="image 1" class="figure-img img-fluid rounded" width="200px">
+        <img src="./assets/resources/ceresA.jpg" alt="image 1" class="figure-img img-fluid rounded" width="200px">
         <figcaption class="figure-caption">Image 1</figcaption>
       </figure>
       <figure class="figure" style="margin-left:200px">
-        <img src="./assets/resources/big.jpg" alt="image 2" class="figure-img img-fluid rounded" style="float: right" width="200px">
+        <img src="./assets/resources/ceresB.jpg" alt="image 2" class="figure-img img-fluid rounded" style="float: right" width="200px">
         <figcaption class="figure-caption">Image 2</figcaption>
       </figure>
       <br>
@@ -36,7 +36,7 @@
       <br>
       <h3> - Evaluation</h3>
       <figure class="figure">
-        <img src="./assets/resources/compare.jpg" alt="images comparision" class="figure-img img-fluid rounded">
+        <img src="./assets/resources/compare_ceres.jpg" alt="images comparision" class="figure-img img-fluid rounded">
         <figcaption class="figure-caption">The "matches" detected above (population: 9) have been plotted in image 1 and image 2 coordinate space for better representation, with the respective points having similiar color.</figcaption>
       </figure>
       <br>
@@ -47,8 +47,8 @@
     <script src="./orb.core.min.js"></script>
     <script>
       new Matcher(
-        "matcher-core/assets/resources/small.jpg",
-        "matcher-core/assets/resources/big.jpg",
+        "./assets/resources/ceresA.jpg",
+        "./assets/resources/ceresB.jpg",
         async function(q) {
           var res = await q;
           document.getElementById("res1").innerHTML = JSON.stringify(res.points);
