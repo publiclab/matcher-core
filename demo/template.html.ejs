@@ -10,10 +10,10 @@
   new Matcher("<%= X%>", "<%= Y%>",
       async function (q) {
         var res = await q;
-        document.getElementById('res').innerHTML = JSON.stringify(res);
+        document.getElementById('res').innerHTML = JSON.stringify(res.matched_points) + "<hr>" + JSON.stringify(res.points);
       },
       {
-      query: 'matches',
+      browser: true,
       leniency: 30,
       params: {
       lap_thres: 30,
