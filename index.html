@@ -47,8 +47,8 @@
     <script src="./orb.core.min.js"></script>
     <script>
       new Matcher(
-        "./assets/resources/ceresA.jpg",
-        "./assets/resources/ceresB.jpg",
+        "matcher-core/assets/resources/ceresA.jpg",
+        "matcher-core/assets/resources/ceresB.jpg",
         async function(q) {
           var res = await q;
           document.getElementById("res1").innerHTML = JSON.stringify(res.points);
