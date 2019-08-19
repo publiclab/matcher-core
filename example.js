@@ -1,5 +1,5 @@
-var x = require('./runner')
+const promise = require('./runner');
 
-x(function(err, out, code){
-  console.log(out.trim());
-});
+function fetchPoints(results) { console.log(results); }
+
+Promise.resolve(promise).then(fetchPoints);
