@@ -1,5 +1,5 @@
-var matcher = require('./runner')
+const promise = require('./runner');
 
-matcher(function(err, out, code){
-  console.log(out);
-});
+function fetchPoints(results) { console.log(results); }
+
+Promise.resolve(promise).then(fetchPoints);
