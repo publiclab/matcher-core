@@ -12,7 +12,7 @@ server.startServer = function() {
 };
 
 server.shutdownServer = function() {
-  if (!server) {
+  if (!this.currentServer) {
     console.error("Server is not currently running");
     return;
   }
