@@ -1,19 +1,19 @@
-const liveServer = require("live-server");
+const liveServer = require('live-server');
 
 const server = {};
 
 server.currentServer = null;
 
-server.startServer = function() {
+server.startServer = function () {
   this.currentServer = liveServer.start({
     open: false,
     port: 9097
   });
 };
 
-server.shutdownServer = function() {
+server.shutdownServer = function () {
   if (!this.currentServer) {
-    console.error("Server is not currently running");
+    console.error('Server is not currently running');
     return;
   }
   server.shutdown();

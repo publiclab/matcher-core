@@ -1,11 +1,11 @@
-const CRI = require("chrome-remote-interface");
+const CRI = require('chrome-remote-interface');
 
-module.exports = function(server) {
+module.exports = function (server) {
   CRI(client => {
     const { Page, Runtime } = client;
 
     Promise.all([Page.enable()]).then(() => {
-      return Page.navigate({ url: "http://localhost:9097/demo/index.html" });
+      return Page.navigate({ url: 'http://localhost:9097/demo/index.html' });
     });
 
     Page.loadEventFired(() => {
@@ -18,7 +18,7 @@ module.exports = function(server) {
         process.exit();
       });
     });
-  }).on("error", err => {
-    console.error("Cannot connect to browser:", err);
+  }).on('error', err => {
+    console.error('Cannot connect to browser:', err);
   });
 };
