@@ -1,2 +1,10 @@
+# Generated folders
 node_modules
 debug.log
+package-lock.json
+*.swp
+*.min.js
+
+# Editors
+.history
+.vscode/
