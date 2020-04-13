@@ -29,13 +29,34 @@ const orbify = function(X, Y, cb, args = {}) {
     matchesArray = [],
     cornersArray = [];
 
-  primaryImage.src = resolve(X);
-  secImage.src = resolve(Y);
+  if (typeof X === "string") primaryImage.src = resolve(X);
+  if (typeof Y === "string") secImage.src = resolve(Y);
+  const img1Width = primaryImage.width || primaryImage.videoWidth || 0;
+  const img1Height = primaryImage.height || primaryImage.videoHeight || 0;
+
   canvas.setAttribute('id', 'canvas');
   canvas.setAttribute('width', self.args.dimensions[0]);
   canvas.setAttribute('height', self.args.dimensions[1]);
   c.setAttribute('id', 'myCanvas');
   c.setAttribute('style', 'border:1px solid #d3d3d3');
+
+  function initialize() {
+    c.width = img1Width;
+    c.height = img1Height;
+    c.style.display = 'none';
+
+    const ctxx = c.getContext('2d');
+    ctxx.drawImage(
+        primaryImage,
+        0,
+        0,
+        img1Width,
+        img1Height
+    );
+
+    options.train_pattern();
+    console.log('trained pattern');
+  };
 
   (function core() {
     'use strict';
@@ -86,6 +107,7 @@ const orbify = function(X, Y, cb, args = {}) {
       this.matchThreshold = params.matchThreshold || 49;
 
       this.train_pattern = function() {
+console.log('width',img1Width);
         const maxPatternSize = 512,
           maxPerLevel = 300,
           scInc = Math.sqrt(2.0),
@@ -93,17 +115,17 @@ const orbify = function(X, Y, cb, args = {}) {
           imgData = ctxx.getImageData(
               0,
               0,
-              primaryImage.width,
-              primaryImage.height
+              img1Width,
+              img1Height
           ),
           imgg = new jsfeat.matrix_t(
-              primaryImage.width,
-              primaryImage.height,
+              img1Width,
+              img1Height,
               jsfeat.U8_t | jsfeat.C1_t
           ),
           sc0 = Math.min(
-              maxPatternSize / primaryImage.width,
-              maxPatternSize / primaryImage.height
+              maxPatternSize / img1Width,
+              maxPatternSize / img1Height
           ),
           lev0Img = new jsfeat.matrix_t(
               imgU8.cols,
@@ -119,8 +141,8 @@ const orbify = function(X, Y, cb, args = {}) {
         let lev = 0,
           i = 0,
           sc = 1.0,
-          newWidth = (primaryImage.width * sc0) | 0,
-          newHeight = (primaryImage.height * sc0) | 0,
+          newWidth = (img1Width * sc0) | 0,
+          newHeight = (img1Height * sc0) | 0,
           levCorners,
           levDescriptors,
           cornersNum = 0;
@@ -152,8 +174,8 @@ const orbify = function(X, Y, cb, args = {}) {
 
         jsfeat.imgproc.grayscale(
             imgData.data,
-            primaryImage.width,
-            primaryImage.height,
+            img1Width,
+            img1Height,
             imgg
         );
         jsfeat.imgproc.resample(imgg, lev0Img, newWidth, newHeight);
@@ -161,7 +183,7 @@ const orbify = function(X, Y, cb, args = {}) {
         jsfeat.imgproc.gaussian_blur(lev0Img, levImg, options.blur_size | 0);
         cornersNum = detectKeypoints(levImg, levCorners, maxPerLevel);
         jsfeat.orb.describe(levImg, levCorners, cornersNum, levDescriptors);
-        console.log("train " + lev_img.cols + "x" + lev_img.rows + " points: " + corners_num);
+        /// console.log("train " + levImg.cols + "x" + levImg.rows + " points: " + cornersNum, levCorners);
 
         sc /= scInc;
 
@@ -178,6 +200,7 @@ const orbify = function(X, Y, cb, args = {}) {
           cornersNum = detectKeypoints(levImg, levCorners, maxPerLevel);
           jsfeat.orb.describe(levImg, levCorners, cornersNum, levDescriptors);
           for (i = 0; i < cornersNum; ++i) {
+//console.log('scaling', levCorners[i].x, levCorners[i].x *= 1 / sc);
             levCorners[i].x *= 1 / sc;
             levCorners[i].y *= 1 / sc;
           }
@@ -214,10 +237,12 @@ const orbify = function(X, Y, cb, args = {}) {
     }
 
     async function findPoints() {
+      console.log('find points');
       if (await cornersArray.length) {
         return true;
       }
 
+      // repeat this method as fast as the browser can run it
       window.requestAnimationFrame(findPoints);
 
       const primaryImageData = ctx.getImageData(0, 0, self.args.dimensions[0], self.args.dimensions[1]);
@@ -250,6 +275,7 @@ const orbify = function(X, Y, cb, args = {}) {
     }
 
     async function findMatchedPoints() {
+      console.log('find matched points');
       let numMatches = 0,
         goodMatches = 0;
       if (findPoints()) {
@@ -292,22 +318,7 @@ const orbify = function(X, Y, cb, args = {}) {
       }
     }
 
-    window.onload = function() {
-      c.width = primaryImage.width;
-      c.height = primaryImage.height;
-      c.style.display = 'none';
-
-      const ctxx = c.getContext('2d');
-      ctxx.drawImage(
-          primaryImage,
-          0,
-          0,
-          primaryImage.width,
-          primaryImage.height
-      );
-
-      options.train_pattern();
-    };
+    window.onload = initialize;
 
     demoApp();
 
@@ -400,6 +411,10 @@ const orbify = function(X, Y, cb, args = {}) {
     cb(this.utils);
   } else {
     console.warn('No callback function supplied');
+  }
+
+  return {
+    initialize: initialize
   }
 };
 

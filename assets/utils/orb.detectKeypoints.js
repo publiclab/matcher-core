@@ -1,7 +1,10 @@
 const jsfeat = require('../js/jsfeat.min.js');
 const {icAngle} = require('./orb.icAngle.js');
 
+// expects pre-initialized corners array of:
+// `new jsfeat.keypoint_t(0, 0, 0, 0, -1);` empty corners
 // https://inspirit.github.io/jsfeat/sample_orb.html
+// https://inspirit.github.io/jsfeat/#features2d
 function detectKeypoints(img, corners, maxAllowed) {
   // detect features
   let count = jsfeat.yape06.detect(img, corners, 17);
