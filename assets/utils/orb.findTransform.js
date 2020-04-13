@@ -1,5 +1,7 @@
 const jsfeat = require('../js/jsfeat.min.js');
 
+// estimate homography transform between matched points
+// https://inspirit.github.io/jsfeat/sample_orb.html
 function findTransform(matches, count, patternCorners, screenCorners, homo3x3, matchMask) {
   const mmKernel = new jsfeat.motion_model.homography2d();
   const numModelPoints = 4;

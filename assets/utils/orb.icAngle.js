@@ -1,3 +1,5 @@
+// central difference using image moments to find dominant orientation
+// https://inspirit.github.io/jsfeat/sample_orb.html
 function icAngle(uMax, img, px, py) {
   const halfK = 15;
   let m01 = 0;
@@ -11,10 +13,13 @@ function icAngle(uMax, img, px, py) {
   let d = 0;
   let valPlus = 0;
   let valMinus = 0;
+  // Treat the center line differently, v=0
   for (u = -halfK; u <= halfK; ++u) {
     m10 += u * src[centerOff + u];
   }
+  // Go line by line in the circular patch
   for (v = 1; v <= halfK; ++v) {
+    // Proceed over the two lines
     vSum = 0;
     d = uMax[v];
     for (u = -d; u <= d; ++u) {

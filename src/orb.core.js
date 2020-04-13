@@ -1,3 +1,5 @@
+// Adapted from https://inspirit.github.io/jsfeat/sample_orb.html
+
 // ===================DEPENDENCIES===================
 const jsfeat = require('../assets/js/jsfeat.min.js');
 const resolve = require('path').resolve;
@@ -51,6 +53,7 @@ const orbify = function(X, Y, cb, args = {}) {
       homo3x3,
       matchMask;
 
+    // our point match structure
     const matchT = (function() {
         function matchT(screenIdx, patternLev, patternIdx, distance) {
           if (typeof screenIdx === 'undefined') {
@@ -74,6 +77,7 @@ const orbify = function(X, Y, cb, args = {}) {
       })(),
       numTrainLevels = 4;
 
+    // https://inspirit.github.io/jsfeat/sample_orb.html
     const demoOpt = function() {
       const params = self.args.params || {};
       this.blur_size = params.blur_size || 5;
@@ -127,6 +131,7 @@ const orbify = function(X, Y, cb, args = {}) {
             jsfeat.U8_t | jsfeat.C1_t
         );
 
+        // preallocate corners array
         for (lev = 0; lev < numTrainLevels; ++lev) {
           patternCorners[lev] = [];
           levCorners = patternCorners[lev];
@@ -141,6 +146,7 @@ const orbify = function(X, Y, cb, args = {}) {
           );
         }
 
+        // do the first level
         levCorners = patternCorners[0];
         levDescriptors = patternDescriptors[0];
 
@@ -155,14 +161,18 @@ const orbify = function(X, Y, cb, args = {}) {
         jsfeat.imgproc.gaussian_blur(lev0Img, levImg, options.blur_size | 0);
         cornersNum = detectKeypoints(levImg, levCorners, maxPerLevel);
         jsfeat.orb.describe(levImg, levCorners, cornersNum, levDescriptors);
+        console.log("train " + lev_img.cols + "x" + lev_img.rows + " points: " + corners_num);
 
         sc /= scInc;
 
+        // lets do multiple scale levels
         for (lev = 1; lev < numTrainLevels; ++lev) {
           levCorners = patternCorners[lev];
           levDescriptors = patternDescriptors[lev];
           newWidth = (lev0Img.cols * sc) | 0;
           newHeight = (lev0Img.rows * sc) | 0;
+          // we can use Canvas context draw method for faster resize
+          // but its nice to demonstrate that you can do everything with jsfeat
           jsfeat.imgproc.resample(lev0Img, levImg, newWidth, newHeight);
           jsfeat.imgproc.gaussian_blur(levImg, levImg, options.blur_size | 0);
           cornersNum = detectKeypoints(levImg, levCorners, maxPerLevel);

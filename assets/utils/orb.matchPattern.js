@@ -1,3 +1,4 @@
+// Adapted from https://inspirit.github.io/jsfeat/sample_orb.html
 const {popcnt32} = require('./orb.popcnt32.js');
 
 function matchPattern(matches, screenDescriptors, patternDescriptors, numTrainLevels, options) {
