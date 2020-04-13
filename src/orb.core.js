@@ -29,6 +29,7 @@ const orbify = function(X, Y, cb, args = {}) {
     matchesArray = [],
     cornersArray = [];
 
+  // in-progress work to accommodate 
   if (typeof X === "string") primaryImage.src = resolve(X);
   if (typeof Y === "string") secImage.src = resolve(Y);
   const img1Width = primaryImage.width || primaryImage.videoWidth || 0;
@@ -243,7 +244,7 @@ console.log('width',img1Width);
       }
 
       // repeat this method as fast as the browser can run it
-      window.requestAnimationFrame(findPoints);
+      if (args.loop) window.requestAnimationFrame(findPoints);
 
       const primaryImageData = ctx.getImageData(0, 0, self.args.dimensions[0], self.args.dimensions[1]);
 
@@ -282,7 +283,7 @@ console.log('width',img1Width);
         if (await matchesArray.length) {
           return;
         }
-        requestAnimationFrame(findMatchedPoints);
+        if (args.loop) requestAnimationFrame(findMatchedPoints);
         if (patternPreview) {
           numMatches = await matchPattern(
               matches,
