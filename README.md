@@ -6,7 +6,6 @@
 
 * better document with comments; "pattern" vs "screen" as img1 vs img2
   * and note that output keypoint matches are scaled down to 512x512 space, and img2 by 1.25 smaller than that
-* assess use of `requestAnimationFrame` for repeated runs - is it necessary?
 * continue to modularize files in /src/, reducing dependence on shared state
 * optimize if necessary: reduce use of jsfeat resample methods
 
@@ -14,6 +13,9 @@ Short-term:
 
 * allow initialization independent of `window.onload` (done, needs docs)
 * refactor to not run continuously
+  * assess use of `requestAnimationFrame` for repeated runs - is it necessary?
+* refactor `resolve(X)` and `resolve(Y)` on construction to enable use of video sources? (i.e. non-string values of X, Y: mediaStream instead)
+
 
 ## Installation
 
