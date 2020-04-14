@@ -15,7 +15,7 @@ Short-term:
 * refactor to not run continuously
   * assess use of `requestAnimationFrame` for repeated runs - is it necessary?
 * refactor `resolve(X)` and `resolve(Y)` on construction to enable use of video sources? (i.e. non-string values of X, Y: mediaStream instead)
-
+X allow passing image objects instead of src to constructor
 
 ## Installation
 
